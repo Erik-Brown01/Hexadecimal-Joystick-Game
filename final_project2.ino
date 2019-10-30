@@ -1,10 +1,13 @@
 //www.elegoo.com
 //2016.12.12
+//Erik Brown and Miguel Studejo
+//Hexadecimal joystick game
+//This program is a basic computer game that generates a number, displays it on a 4 digit digital display, then has the user move the joystick to a corresponding position
 
 int latch=9;  //74HC595  pin 9 STCP
 int clock=10; //74HC595  pin 10 SHCP
 int data=8;   //74HC595  pin 8 DS
-int x;
+int x;//Randomly generated number
 int delayTime=5100;
 int lives=3;
 int score=0;
@@ -35,7 +38,7 @@ void Display(unsigned char num)
 }
 void loop() {
   do{
-    x=random(0,15);
+    x=random(0,15);//Generate a random number between 0 and 15
     switch(x){
       case 0:
         Display(0);
@@ -85,71 +88,71 @@ void loop() {
       case 15:
         Display(15);
         break;
-    }
-    delayTime=delayTime-150;
-    delay(delayTime);
-    if((x>0)&&(x<8)&&(x%2==1)){
-      if((analogRead(X_pin)>512)&&(analogRead(Y_pin)<512)){
-        Serial.print("Good Job!\n");
+    }//Display the generated number on the display
+    delayTime=delayTime-150;//Decrease the time the user has to move the joystick every turn
+    delay(delayTime);//This is the time the user has to move the joystick to the correct position
+    if((x>0)&&(x<8)&&(x%2==1)){//Case if number is less than 8 and odd
+      if((analogRead(X_pin)>512)&&(analogRead(Y_pin)<512)){//Check if joystick is in the first quadrant
+        Serial.print("Good Job!\n");//Case if joystick position is correct
         score++;
       }
       else{
-        Serial.print("That's not it!\n");
+        Serial.print("That's not it!\n");//Case if joystick position is wrong
         lives--;
         Serial.print(lives);
         Serial.print(" lives left!\n");
       }
     }
-    else if((x>0)&&(x<8)&&(x%2==0)){
-      if((analogRead(X_pin)<512)&&(analogRead(Y_pin)<512)){
-        Serial.print("Good Job!\n");
+    else if((x>0)&&(x<8)&&(x%2==0)){//Case if number is less than 8 and even
+      if((analogRead(X_pin)<512)&&(analogRead(Y_pin)<512)){//Check if joystick is in the second quadrant
+        Serial.print("Good Job!\n");//Case if joystick position is correct
         score++;
       }
       else{
-        Serial.print("That's not it!\n");
+        Serial.print("That's not it!\n");//Case if joystick position is wrong
         lives--;
         Serial.print(lives);
         Serial.print(" lives left!\n");
       }
     }
-    else if((x>8)&&(x<16)&&(x%2==0)){
-      if((analogRead(X_pin)<512)&&(analogRead(Y_pin)>512)){
-        Serial.print("Good Job!\n");
+    else if((x>8)&&(x<16)&&(x%2==0)){//Case if number is greater than 8 and even
+      if((analogRead(X_pin)<512)&&(analogRead(Y_pin)>512)){//Check if joystick is in the third quadrant
+        Serial.print("Good Job!\n");//Case if joystick position is correct
         score++;
       }
       else{
-        Serial.print("That's not it!\n");
+        Serial.print("That's not it!\n");//Case if joystick position is wrong
         lives--;
         Serial.print(lives);
         Serial.print(" lives left!\n");
       }
     }
-    else if((x>8)&&(x<16)&&(x%2==1)){
-      if((analogRead(X_pin)>512)&&(analogRead(Y_pin)>512)){
-        Serial.print("Good Job!\n");
+    else if((x>8)&&(x<16)&&(x%2==1)){//Case if number is greater than 8 and odd
+      if((analogRead(X_pin)>512)&&(analogRead(Y_pin)>512)){//Check if joystick is in the fourth quadrant
+        Serial.print("Good Job!\n");//Case if joystick position is correct
         score++;
       }
       else{
-        Serial.print("That's not it!\n");
+        Serial.print("That's not it!\n");//Case if joystick position is wrong
         lives--;
         Serial.print(lives);
         Serial.print(" lives left!\n");
       }
     }
-    else if((x==8)||(x==0)){
-      if((digitalRead(SW_pin))==0){
-        Serial.print("Good Job!\n");
+    else if((x==8)||(x==0)){//Case if number is 0 or 8
+      if((digitalRead(SW_pin))==0){//Check if joystick is pressed down
+        Serial.print("Good Job!\n");//Case if joystick position is correct
         score++;
       }
       else{
-        Serial.print("That's not it!\n");
+        Serial.print("That's not it!\n");//Case if joystick position is wrong
         lives--;
         Serial.print(lives);
         Serial.print(" lives left!\n");
       }
     }
-  }while(lives>0);
-  Serial.print("Game Over\n");
+  }while(lives>0);//Loop ends when user loses all 3 lives
+  Serial.print("Game Over\n");//The game ends and the user's score is displayed
   Serial.print("Score: ");
   Serial.print(score);
   delay(10000000000000);
